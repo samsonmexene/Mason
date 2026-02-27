@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passport Invitation</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  overflow:hidden;
+  font-family:sans-serif;
+}
+
+/* Scene */
+.scene{
+  perspective:2000px;
+}
+
+/* Book */
+.book{
+  width:350px;
+  height:500px;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 1s ease;
+  cursor:pointer;
+}
+
+/* Rotate to landscape */
+.book.landscape{
+  transform:rotateZ(90deg) scale(1.05);
+}
+
+/* Cover (front + back) */
+.cover{
+  position:absolute;
+  width:100%;
+  height:100%;
+  transform-origin:left;
+  transform-style:preserve-3d;
+  transition:transform 1s ease;
+  z-index:5;
+  border-radius:12px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.5);
+}
+
+/* Front Cover */
+.cover-front,
+.cover-back{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.cover-front img,
+.cover-back img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* Back of cover (3.png) */
+.cover-back{
+  transform:rotateY(180deg);
+}
+
+/* Open cover */
+.book.open .cover{
+  transform:rotateY(-180deg);
+}
+
+/* Inside Page (2.png only) */
+.page{
+  position:absolute;
+  width:100%;
+  height:100%;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 25px 50px rgba(0,0,0,0.3);
+}
+
+.page img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* Stamp */
+.stamp{
+  position:absolute;
+  bottom:20px;
+  right:20px;
+  border:4px solid #b91c1c;
+  color:#b91c1c;
+  padding:18px;
+  border-radius:50%;
+  font-weight:bold;
+  font-size:14px;
+  transform:scale(0);
+  opacity:0;
+}
+
+.book.open .stamp{
+  animation:stamp 0.6s ease forwards 1s;
+}
+
+@keyframes stamp{
+  0%{transform:scale(3);opacity:0;}
+  100%{transform:scale(1);opacity:1;}
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .book{
+    transform:scale(0.85);
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="scene">
+  <div class="book" id="book">
+
+    <!-- Inside Page (2.png only) -->
+    <div class="page">
+      <img src="2.png" alt="Inside Page">
+      <div class="stamp">ENTRY APPROVED</div>
+    </div>
+
+    <!-- Cover -->
+    <div class="cover">
+
+      <!-- FRONT = 1.png -->
+      <div class="cover-front">
+        <img src="1.png" alt="Passport Cover">
+      </div>
+
+      <!-- BACK OF COVER = 3.png -->
+      <div class="cover-back">
+        <img src="3.png" alt="Back of Cover">
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+const book = document.getElementById("book");
+let opened = false;
+
+book.addEventListener("click", () => {
+  opened = !opened;
+
+  if(opened){
+    book.classList.add("landscape");
+    setTimeout(()=>{
+      book.classList.add("open");
+    },300);
+  }else{
+    book.classList.remove("open");
+    setTimeout(()=>{
+      book.classList.remove("landscape");
+    },800);
+  }
+});
+</script>
+
+</body>
+</html>
